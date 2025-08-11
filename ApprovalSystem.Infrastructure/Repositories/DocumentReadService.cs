@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApprovalSystem.Infrastructure.Repositories;
 
-public class EfDocumentReadService(ApprovalSystemDbContext db) : IDocumentReadService
+public class DocumentReadService(ApprovalSystemDbContext db) : IDocumentReadService
 {
     public Task<bool> ExistsAsync(Guid id, CancellationToken ct) => db.Documents.AnyAsync(d => d.Id == id, ct);
 }

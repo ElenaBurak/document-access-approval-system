@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApprovalSystem.Infrastructure.Repositories
 {
-    public sealed class EfUserReadService(ApprovalSystemDbContext db) : IUserReadService
+    public sealed class UserReadService(ApprovalSystemDbContext db) : IUserReadService
     {
         public Task<bool> ExistsAsync(Guid id, CancellationToken ct) => db.Users.AnyAsync(u => u.Id == id, ct);
     }

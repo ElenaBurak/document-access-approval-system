@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace ApprovalSystem.Infrastructure.Repositories
 {
-    public class EfAccessRequestRepository : IAccessRequestRepository
+    public class AccessRequestRepository : IAccessRequestRepository
     {
         private readonly ApprovalSystemDbContext _db;
-        public EfAccessRequestRepository(ApprovalSystemDbContext db) => _db = db;
+        public AccessRequestRepository(ApprovalSystemDbContext db) => _db = db;
 
         public Task<AccessRequest?> GetByIdAsync(Guid id, CancellationToken ct)
             => _db.AccessRequests.Include(r => r.Decision).FirstOrDefaultAsync(r => r.Id == id, ct);

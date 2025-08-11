@@ -31,7 +31,7 @@ Thumbs.db
 appsettings.*.local.json
 appsettings.Local.json
 
-# SQLite / локальные БД
+# SQLite
 *.db
 *.sqlite
 *.sqlite3

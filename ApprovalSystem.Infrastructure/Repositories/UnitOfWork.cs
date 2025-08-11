@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ApprovalSystem.Infrastructure.Repositories
 {
-    public class EfUnitOfWork(ApprovalSystemDbContext db) : IUnitOfWork
+    public class UnitOfWork(ApprovalSystemDbContext db) : IUnitOfWork
     {
         public Task<int> SaveChangesAsync(CancellationToken ct) => db.SaveChangesAsync(ct);
     }
