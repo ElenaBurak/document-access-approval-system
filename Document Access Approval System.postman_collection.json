@@ -1,0 +1,223 @@
+﻿{
+  "info": {
+    "_postman_id": "3b489584-2f3d-4cad-8ad2-6dfd61ccfdc8",
+    "name": "Document Access Approval System",
+    "description": "Postman collection for testing Document Access Approval System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "15564674"
+  },
+  "item": [
+    {
+      "name": "Create Access Request",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Created\", function () {\r",
+              "  pm.response.to.have.status(200); // или 201, как у тебя\r",
+              "});\r",
+              "const data = pm.response.json();\r",
+              "pm.environment.set(\"RequestId\", data.id); "
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-User-Id",
+            "value": "{{UserId}}"
+          },
+          {
+            "key": "X-Role",
+            "value": "User"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"documentId\":  \"00000000-0000-0000-0000-000000000010\", //\"{{DocumentId}}\",\n    \"reason\": \"Need to review contract\",\n    \"accessType\": 0\n}"
+        },
+        "url": {
+          "raw": "{{BaseUrl}}/api/requests",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "requests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Pending Requests (Approver)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{ApproverId}}"
+          },
+          {
+            "key": "X-Role",
+            "value": "Approver"
+          }
+        ],
+        "url": {
+          "raw": "{{BaseUrl}}/api/requests?mine=false&status=Pending",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "requests"
+          ],
+          "query": [
+            {
+              "key": "mine",
+              "value": "false"
+            },
+            {
+              "key": "status",
+              "value": "Pending"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Approve Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-User-Id",
+            "value": "{{ApproverId}}"
+          },
+          {
+            "key": "X-Role",
+            "value": "Approver"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"accessRequestId\": \"{{RequestId}}\",\n    \"isApproved\": true,\n    \"comment\": \"Approved for review\"\n}"
+        },
+        "url": {
+          "raw": "{{BaseUrl}}/api/requests/{{RequestId}}/decisions",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "requests",
+            "{{RequestId}}",
+            "decisions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Reject Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-User-Id",
+            "value": "{{ApproverId}}"
+          },
+          {
+            "key": "X-Role",
+            "value": "Approver"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"accessRequestId\": \"{{RequestId}}\",\n    \"isApproved\": false,\n    \"comment\": \"Not authorized\"\n}"
+        },
+        "url": {
+          "raw": "{{BaseUrl}}/api/requests/{{RequestId}}/decisions",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "requests",
+            "{{RequestId}}",
+            "decisions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Request By Id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "{{UserId}}"
+          },
+          {
+            "key": "X-Role",
+            "value": "User"
+          }
+        ],
+        "url": {
+          "raw": "{{BaseUrl}}/api/requests/{{RequestId}}",
+          "host": [
+            "{{BaseUrl}}"
+          ],
+          "path": [
+            "api",
+            "requests",
+            "{{RequestId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "BaseUrl",
+      "value": "https://localhost:5001"
+    },
+    {
+      "key": "UserId",
+      "value": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "key": "ApproverId",
+      "value": "00000000-0000-0000-0000-000000000002"
+    },
+    {
+      "key": "DocumentId",
+      "value": "00000000-0000-0000-0000-000000000010"
+    },
+    {
+      "key": "RequestId",
+      "value": "00000000-0000-0000-0000-000000000100"
+    }
+  ]
+}

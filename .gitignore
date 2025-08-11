@@ -1,0 +1,44 @@
+﻿# build artifacts
+bin/
+obj/
+publish/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+_ReSharper.*
+*_ReSharper.Caches/
+
+# logs & coverage
+logs/
+*.log
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# secrets & local configs
+appsettings.*.local.json
+appsettings.Local.json
+
+# SQLite / локальные БД
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+*.nupkg
+*.snupkg
+
+docs/postman/*environment*.json
