@@ -2,8 +2,9 @@
 {
     public class Decision
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        // PK = FK на AccessRequest
         public Guid AccessRequestId { get; set; }
+        public AccessRequest AccessRequest { get; private set; } = null!; // navigation property, required for EF
         public Guid ApproverId { get; set; }
         public DecisionType Type { get; set; }
         public string? Comment { get; set; }

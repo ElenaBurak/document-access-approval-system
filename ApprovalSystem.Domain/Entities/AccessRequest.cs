@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ApprovalSystem.Domain.Entities
+﻿namespace ApprovalSystem.Domain.Entities
 {
     public class AccessRequest
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public Guid RequesterId { get; set; }
         public Guid DocumentId { get; set; }
         public AccessType RequestedAccess { get; set; }
@@ -23,7 +17,7 @@ namespace ApprovalSystem.Domain.Entities
         {
             if (documentId == Guid.Empty) throw new ArgumentException("DocumentId is required");
             if (requesterId == Guid.Empty) throw new ArgumentException("RequesterId is required");
-            if (string.IsNullOrWhiteSpace(reason)) throw new ArgumentException("Reason is required");            
+            if (string.IsNullOrWhiteSpace(reason)) throw new ArgumentException("Reason is required");
 
             return new AccessRequest
             {
@@ -46,22 +40,32 @@ namespace ApprovalSystem.Domain.Entities
         {
             if (approverId == Guid.Empty) throw new ArgumentException("ApproverId is required");
             if (Status != RequestStatus.Pending) throw new InvalidOperationException($"Request already {Status}.");
-            if (approverId == RequesterId) throw new InvalidOperationException("Requester cannot decide their own request.");           
+            if (approverId == RequesterId) throw new InvalidOperationException("Requester cannot decide their own request.");
 
             Status = type == DecisionType.Approve ? RequestStatus.Approved : RequestStatus.Rejected;
             DecidedAtUtc = DateTime.UtcNow;
 
-            var decision = new Decision
-            {
-                AccessRequestId = Id,
-                ApproverId = approverId,
-                Type = type,
-                Comment = string.IsNullOrWhiteSpace(comment) ? null : comment.Trim(),
-                CreatedAtUtc = DecidedAtUtc.Value
-            };
 
-            Decision = decision;
-            return decision;
+            if (Decision is null)
+            {
+                Decision = new Decision
+                {
+                    AccessRequestId = Id, // PK = FK
+                    ApproverId = approverId,
+                    Type = type,
+                    Comment = string.IsNullOrWhiteSpace(comment) ? null : comment.Trim(),
+                    CreatedAtUtc = DecidedAtUtc.Value
+                };
+            }
+            else
+            {
+                Decision.Type = type;
+                Decision.ApproverId = approverId;
+                Decision.Comment = string.IsNullOrWhiteSpace(comment) ? null : comment.Trim();
+                Decision.CreatedAtUtc = DecidedAtUtc.Value;
+            }
+
+            return Decision;            
         }
 
     }

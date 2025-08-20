@@ -10,8 +10,7 @@ namespace ApprovalSystem.Infrastructure
         public static async Task SeedAsync(this IServiceProvider services, CancellationToken ct = default)
         {
             using var scope = services.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<ApprovalSystemDbContext>();
-
+            var db = scope.ServiceProvider.GetRequiredService<ApprovalSystemDbContext>();            
             // Ensure the in-memory store is created
             await db.Database.EnsureCreatedAsync(ct);
 

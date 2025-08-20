@@ -18,4 +18,11 @@ public sealed class NoopNotificationBus : INotificationBus
         _logger.LogInformation("[NOTIFY] {Message}", message);
         return Task.CompletedTask;
     }
+
+    public Task PublishRawAsync(string type, string payload, Guid correlationId, CancellationToken ct)
+    {
+        _logger.LogInformation("[BUS] Type={Type} CorrelationId={CorrelationId} Payload={Payload}",
+                              type, correlationId, payload);
+        return Task.CompletedTask;
+    }
 }

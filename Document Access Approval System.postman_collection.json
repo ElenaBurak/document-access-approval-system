@@ -15,7 +15,7 @@
           "script": {
             "exec": [
               "pm.test(\"Created\", function () {\r",
-              "  pm.response.to.have.status(200); // или 201, как у тебя\r",
+              "  pm.response.to.have.status(200);\r",
               "});\r",
               "const data = pm.response.json();\r",
               "pm.environment.set(\"RequestId\", data.id); "
@@ -43,7 +43,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"documentId\":  \"00000000-0000-0000-0000-000000000010\", //\"{{DocumentId}}\",\n    \"reason\": \"Need to review contract\",\n    \"accessType\": 0\n}"
+          "raw": "{\n    \"documentId\":  //\"00000000-0000-0000-0000-000000000012\",\n     \"00000000-0000-0000-0000-000000000010\", \n    //\"{{DocumentId}}\",\n    \"reason\": \"Need to review contract\",\n    \"requestedAccess\": 1 //RequestedAccess: Read = 1, Edit = 2\n}"
         },
         "url": {
           "raw": "{{BaseUrl}}/api/requests",
@@ -181,6 +181,11 @@
           {
             "key": "X-Role",
             "value": "User"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
           }
         ],
         "url": {

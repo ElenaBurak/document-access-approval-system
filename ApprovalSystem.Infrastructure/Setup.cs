@@ -1,5 +1,6 @@
 ﻿using ApprovalSystem.Application;
 using ApprovalSystem.Infrastructure.Notifications;
+using ApprovalSystem.Infrastructure.Outbox;
 using ApprovalSystem.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,8 @@ namespace ApprovalSystem.Infrastructure
             services.AddScoped<IDocumentReadService, DocumentReadService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddSingleton<INotificationBus, NoopNotificationBus>();
+            services.AddScoped<IOutbox, OutboxRepository>();
+            services.AddHostedService<OutboxPublisher>();
             return services;
         }
     }

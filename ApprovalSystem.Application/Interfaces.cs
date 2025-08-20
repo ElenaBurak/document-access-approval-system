@@ -19,7 +19,7 @@ namespace ApprovalSystem.Application
         Task<AccessRequest?> GetByIdAsync(Guid id, CancellationToken ct);
         Task<bool> ExistsPendingAsync(Guid requesterId, Guid documentId, AccessType access, CancellationToken ct);
         Task AddAsync(AccessRequest entity, CancellationToken ct);
-       
+
         Task<IReadOnlyList<AccessRequest>> ListMineAsync(Guid requesterId, RequestFilterStatus status, CancellationToken ct);
         Task<IReadOnlyList<AccessRequest>> ListAllAsync(RequestFilterStatus status, CancellationToken ct);
     }
@@ -41,6 +41,15 @@ namespace ApprovalSystem.Application
 
     public interface INotificationBus
     {
+        // simple log
         Task PublishAsync(string message, CancellationToken ct);
+
+        // contract for outbox/bus
+        Task PublishRawAsync(string type, string payload, Guid correlationId, CancellationToken ct);
+    }
+
+    public interface IOutbox
+    {
+        Task EnqueueAsync(string type, string payload, DateTime occurredUtc, CancellationToken ct);
     }
 }
