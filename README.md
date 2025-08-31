@@ -1,4 +1,25 @@
 ﻿# Document Access Approval System
+## Objective:
+Design and implement a small but well-structured REST API for managing access requests 
+to internal documents. This assignment mimics a real-world enterprise scenario where 
+sensitive documents require an approval workflow.
+
+Business Requirements:
+
+  Actors:
+  - User – can request access to a document
+  - Approver – reviews and accepts/rejects requests
+  - (Optional) Admin – manages access
+    
+  Use Cases:
+  
+    1. A user submits an access request to a document, including:
+      - Document ID
+      - Reason for access
+      - Requested access type (Read / Edit)
+    2. The approver sees a list of pending requests and can:
+      - Approve or reject with a comment
+    3. The user can check the status of their requests. 
 
 ## Quick start
 ```bash
